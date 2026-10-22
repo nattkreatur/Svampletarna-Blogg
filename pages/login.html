@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logga in</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="module" src="../dist/login.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Svampletarna</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Startsida</a></li> <!-- ../ används för att ta sig ur mappen-->
+            <li><a href="./svampar.html">Svampförteckning</a></li>
+            <li><a href="./forvaxling.html">Förväxlingssvampar</a></li>
+            <li><a href="./minasvampar.html">Mina svampar</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="intro"> 
+            <div>
+                <p id="userStatus"></p>
+                <button id="logOut">Logga ut</button>
+                <form>
+                    <h3>Logga in</h3>
+
+                    <label for="user">Namn</label>
+                    <input type="text" name="user" id="user"><br><br>
+
+                    <label for="pwd">Lösenord</label>
+                    <input type="password" name="pwd" id="pwd"><br>
+
+                    <input type="submit" value="Logga in">
+
+                    <p id="error">Du är inte inloggad.</p>
+                </form>
+                <a href="./blogg.html">Tillbaka till bloggen</a>
+            </div>
+                    
+        </section>    
+    </main>
+    <footer>
+        <p>&copy;Svampletarna 2026</p>
+    </footer>
+</body>
+</html>

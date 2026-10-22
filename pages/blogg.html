@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blogg</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script type="module" src="../dist/blogg.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Svampletarna</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="../index.html">Startsida</a></li> <!-- ../ används för att ta sig ur mappen-->
+            <li><a href="./svampar.html">Svampförteckning</a></li>
+            <li><a href="./forvaxling.html">Förväxlingssvampar</a></li>
+            <li><a href="./minasvampar.html">Mina svampar</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="intro"> 
+            <article>
+                <h2>Blogg</h2>
+                <p>De senaste blogginläggen från föreningens medlemmar.</p>
+                <p>Logga in för att skapa eller kommentera inlägg.</p>
+            </article>
+            <div>
+                <p id="userStatus"></p>
+                <a id="logIn" href="./login.html">Logga in</a>
+                <button id="logOut">Logga ut</button>
+            </div>
+            <form action=""></form>
+                    
+        </section>    
+        <section id="blogpost"> <!--blogpost UNIKT för denna sidan pga JS-funktion -->
+            
+            <!-- Här ska svamparna in, article med h3 img och p-->
+
+        </section>
+    </main>
+    <footer>
+        <p>&copy;Svampletarna 2026</p>
+    </footer>
+</body>
+</html>
