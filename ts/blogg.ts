@@ -7,15 +7,20 @@ const logInLink = document.querySelector<HTMLAnchorElement>("#logIn"); //Länk t
 const formRef = document.querySelector<HTMLFormElement>("form");
 
 function init(): void{
-    
+
+    checkArray(); //Kollar om det redan finns blogginlägg i localstorage.
+    console.log(blogPostArray); //för felsökning
+
     if(formRef){
+
         formRef.addEventListener("submit", event => {
             event.preventDefault(); //stoppar inbyggd formulärhantering. TS tar över
             //kör funktion för att hämta data och spara i array
+            
             getPost();
         })
     }
-    showStatus();
+    showStatus(); //Ger användaren feedback om hen är inloggad eller inte.
     logOut();
     
 }
@@ -54,16 +59,31 @@ function logOut():void{
 //Funktioner för att skapa och spara blogginlägg//
 //////////////////////////////////////////////////
 
-let blogPosts: BlogPost[] = []; //en array där varje inlägg måste följa strukturen som interface BlogPost anger
+let blogPostArray: NewPost[] = []; //en tom array som bara får innehålla objekt av typen BlogPost
 
 
-interface BlogPost {
-    title: string;
+
+interface NewComment {
     userName: string;
-    content: string;
     date: string;
+    content: string;
+
+}
+interface NewPost extends NewComment {
+    title: string;
+    //comment: NewComment[];
 }
 
+function checkArray() {
+    const savedPosts = localStorage.getItem("blogPosts");
+
+    if(savedPosts) {
+        blogPostArray = JSON.parse(savedPosts) as NewPost[];
+}
+}
+
+//Funktionens uppdrag är att hämta information från formulärets inputfält och sedan pusha dem till en array.
+//De pushas med hjälp av JSON-stringify.
 function getPost(){
     if(!formRef) return;
 
@@ -75,13 +95,18 @@ function getPost(){
     !(contentPost instanceof HTMLTextAreaElement)) return; //kontrollerar att det är rätt typ av element(input o textarea)
     if(!author) return; //Kör bara om användarnamn finns(körs ej om användarnamn saknas)
 
-    const newPost: BlogPost = {
+    const newPost: NewPost = {
         title: titlePost.value,
         userName: author,
         content: contentPost.value,
         date: new Date().toISOString()
     };
-    console.log(newPost); //för felsökning
+    
+    blogPostArray.push(newPost);
+    localStorage.setItem("blogPosts", JSON.stringify(blogPostArray)); //omvandlar array till string och sparar till localstorage
+
+    console.log(blogPostArray); //för felsökning
+    //console.log(newPost); //för felsökning
 }
 
 init();

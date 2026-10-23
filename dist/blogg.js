@@ -4,6 +4,8 @@ const logOutBtn = document.querySelector("#logOut");
 const logInLink = document.querySelector("#logIn"); //Länk till inloggningssidan
 const formRef = document.querySelector("form");
 function init() {
+    checkArray(); //Kollar om det redan finns blogginlägg i localstorage.
+    console.log(blogPostArray); //för felsökning
     if (formRef) {
         formRef.addEventListener("submit", event => {
             event.preventDefault(); //stoppar inbyggd formulärhantering. TS tar över
@@ -11,7 +13,7 @@ function init() {
             getPost();
         });
     }
-    showStatus();
+    showStatus(); //Ger användaren feedback om hen är inloggad eller inte.
     logOut();
 }
 /////////////////////////////////////////////
@@ -46,7 +48,15 @@ function logOut() {
 //////////////////////////////////////////////////
 //Funktioner för att skapa och spara blogginlägg//
 //////////////////////////////////////////////////
-let blogPosts = []; //en array där varje inlägg måste följa strukturen som interface BlogPost anger
+let blogPostArray = []; //en tom array som bara får innehålla objekt av typen BlogPost
+function checkArray() {
+    const savedPosts = localStorage.getItem("blogPosts");
+    if (savedPosts) {
+        blogPostArray = JSON.parse(savedPosts);
+    }
+}
+//Funktionens uppdrag är att hämta information från formulärets inputfält och sedan pusha dem till en array.
+//De pushas med hjälp av JSON-stringify.
 function getPost() {
     if (!formRef)
         return;
@@ -64,7 +74,10 @@ function getPost() {
         content: contentPost.value,
         date: new Date().toISOString()
     };
-    console.log(newPost); //för felsökning
+    blogPostArray.push(newPost);
+    localStorage.setItem("blogPosts", JSON.stringify(blogPostArray)); //omvandlar array till string och sparar till localstorage
+    console.log(blogPostArray); //för felsökning
+    //console.log(newPost); //för felsökning
 }
 init();
 export {};
