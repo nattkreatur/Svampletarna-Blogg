@@ -5,6 +5,7 @@ const logInLink = document.querySelector("#logIn"); //Länk till inloggningssida
 const formRef = document.querySelector("form");
 function init() {
     checkArray(); //Kollar om det redan finns blogginlägg i localstorage.
+    createArticles(blogPostArray);
     console.log(blogPostArray); //för felsökning
     if (formRef) {
         formRef.addEventListener("submit", event => {
@@ -48,9 +49,11 @@ function logOut() {
 //////////////////////////////////////////////////
 //Funktioner för att skapa och spara blogginlägg//
 //////////////////////////////////////////////////
-let blogPostArray = []; //en tom array som bara får innehålla objekt av typen BlogPost
+let blogPostArray = []; //skapar array som bara får innehålla objekt av typen BlogPost
 function checkArray() {
     const savedPosts = localStorage.getItem("blogPosts");
+    //hämtar bloggen som string från localstorage och parsar dem tillbaka till object
+    //i blogPostArray. as NewPost säger att arrayen ska innehålla NewPost objekt.
     if (savedPosts) {
         blogPostArray = JSON.parse(savedPosts);
     }
@@ -76,8 +79,34 @@ function getPost() {
     };
     blogPostArray.push(newPost);
     localStorage.setItem("blogPosts", JSON.stringify(blogPostArray)); //omvandlar array till string och sparar till localstorage
+    //createArticles(blogPostArray); Behövs denna?
     console.log(blogPostArray); //för felsökning
     //console.log(newPost); //för felsökning
+}
+//////////////////////////////////////////////////////
+//Funktioner för att skriva ut blogginlägg i section//
+//////////////////////////////////////////////////////
+const sectionRef = document.getElementById("blogpost");
+//Funktionen tar emot en array med objekt(NewPost[]) och skriver ut dessa som artiklar genom att skapa HTML-element.
+function createArticles(blogPostArray) {
+    if (!sectionRef)
+        return;
+    blogPostArray.forEach(post => {
+        const articleElement = document.createElement("article");
+        let element = createElement("h3", post.title);
+        articleElement.appendChild(element);
+        element = createElement("p", "Skrivet av: " + post.userName + " - " + post.date);
+        articleElement.appendChild(element);
+        element = createElement("p", post.content);
+        articleElement.appendChild(element);
+        sectionRef.appendChild(articleElement);
+    });
+}
+//Funktionen skapar HTML-element
+function createElement(element, text) {
+    const newElement = document.createElement(element);
+    newElement.textContent = text;
+    return newElement;
 }
 init();
 export {};
