@@ -3,6 +3,7 @@ const createBlogPost = document.getElementById("createBlogPost");
 const logOutBtn = document.querySelector("#logOut");
 const logInLink = document.querySelector("#logIn"); //Länk till inloggningssidan
 const formRef = document.querySelector("form");
+let loggedIn = localStorage.getItem("loggedIn");
 function init() {
     checkArray(); //Kollar om det redan finns blogginlägg i localstorage.
     createArticles(blogPostArray);
@@ -23,7 +24,6 @@ function init() {
 function showStatus() {
     if (!loginStatus || !logOutBtn || !logInLink || !createBlogPost)
         return;
-    let loggedIn = localStorage.getItem("loggedIn");
     if (loggedIn === "true") {
         loginStatus.textContent = "Du är inloggad.";
         logInLink.style.display = "none";
@@ -43,6 +43,7 @@ function logOut() {
     logOutBtn.addEventListener("click", event => {
         localStorage.removeItem("loggedIn");
         localStorage.removeItem("userName");
+        location.reload(); //laddar om sidan
         showStatus();
     });
 }
@@ -75,11 +76,12 @@ function getPost() {
         title: titlePost.value,
         userName: author,
         content: contentPost.value,
-        date: new Date().toISOString()
+        date: new Date().toLocaleDateString("sv-SV"),
+        comment: [] //inlägg börjar med en tom array för kommentarer
     };
     blogPostArray.push(newPost);
     localStorage.setItem("blogPosts", JSON.stringify(blogPostArray)); //omvandlar array till string och sparar till localstorage
-    //createArticles(blogPostArray); Behövs denna?
+    location.reload(); //laddar om sidan efter post
     console.log(blogPostArray); //för felsökning
     //console.log(newPost); //för felsökning
 }
@@ -88,17 +90,41 @@ function getPost() {
 //////////////////////////////////////////////////////
 const sectionRef = document.getElementById("blogpost");
 //Funktionen tar emot en array med objekt(NewPost[]) och skriver ut dessa som artiklar genom att skapa HTML-element.
-function createArticles(blogPostArray) {
+function createArticles(blogArray) {
     if (!sectionRef)
         return;
-    blogPostArray.forEach(post => {
+    //skapar en kopia av ursprungsarrayen som bara används här. Den reverserar ordningen på artiklarna innan de skrivs ut.
+    blogArray.slice().reverse().forEach(post => {
         const articleElement = document.createElement("article");
+        //Skapar innehållet i blogginlägget
         let element = createElement("h3", post.title);
         articleElement.appendChild(element);
         element = createElement("p", "Skrivet av: " + post.userName + " - " + post.date);
         articleElement.appendChild(element);
         element = createElement("p", post.content);
         articleElement.appendChild(element);
+        //går igenom eventuella kommentarer med en foreach-loop.
+        if (post.comment) {
+            post.comment.forEach(comment => {
+                const commentContainer = document.createElement("div");
+                let commentElement = createElement("p", comment.userName + " - " + comment.date);
+                commentContainer.appendChild(commentElement);
+                commentElement = createElement("p", comment.content);
+                commentContainer.appendChild(commentElement);
+                articleElement.appendChild(commentContainer);
+            });
+        }
+        //Skapar formulär för kommentarer
+        if (loggedIn === "true") {
+            const commentForm = document.createElement("form");
+            const commentText = document.createElement("textarea");
+            const commentButton = createElement("button", "Publicera kommentar");
+            commentButton.setAttribute("type", "submit");
+            commentForm.append(commentText, commentButton);
+            articleElement.appendChild(commentForm);
+            //input-fältens värden skickas till submitComment
+            submitComment(commentForm, commentText, post);
+        }
         sectionRef.appendChild(articleElement);
     });
 }
@@ -107,6 +133,25 @@ function createElement(element, text) {
     const newElement = document.createElement(element);
     newElement.textContent = text;
     return newElement;
+}
+//Funktionen tar emot inputvärden från kommentarsformuläret i createArticle och
+//skickar in dem som objekt i arrayen. Uppdaterar sedan local storage.
+function submitComment(commentForm, commentText, post) {
+    commentForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const author = localStorage.getItem("userName");
+        if (!author)
+            return;
+        if (!commentText.value.trim())
+            return; //Hindrar tomma kommentarer+enbart mellanslag
+        const newComment = {
+            userName: author,
+            date: new Date().toLocaleDateString("sv-SV"),
+            content: commentText.value
+        };
+        post.comment.push(newComment);
+        localStorage.setItem("blogPosts", JSON.stringify(blogPostArray));
+    });
 }
 init();
 export {};
