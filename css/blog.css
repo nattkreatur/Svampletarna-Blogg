@@ -31,6 +31,13 @@
 Blogginlägg
 */
 
+.intro div{
+    background-color: var(--beige);
+    border: 2px solid var(--oliveGreen);
+    border-radius: 8px;
+    padding: 0.2rem;
+}
+
 #blogpost article{
     background-color: var(--sageGreen);
     border: 2px solid var(--darkBrown);
@@ -44,7 +51,10 @@ Blogginlägg
 }
 
 #blogpost article h3{
-    text-decoration: underline;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: var(--beige);
+    padding: 1rem;
 }
 /*Författare och datum*/
 #blogpost article p:nth-child(2){
