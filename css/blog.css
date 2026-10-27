@@ -1,0 +1,81 @@
+/*Denna CSS innehåller kod som är specifik enbart för blogg.html och login.html*/
+:root {
+    --beige: #e6dccb;
+    --terracotta: #c47457;
+    --sageGreen: #9c9e80;
+    --ochre: #b68036;
+    --oliveGreen: #605f4b;
+    --darkBrown: #3b2c24;
+    --darkGray: #2a2a2a;
+}
+
+/* Blogginlägg 
+#blogpost {
+    width: 100%;
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+#blogpost article {
+    
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--sageGreen);
+    border: 2px solid var(--darkBrown);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+*/
+/*
+Blogginlägg
+*/
+
+#blogpost article{
+    background-color: var(--sageGreen);
+    border: 2px solid var(--darkBrown);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 1rem;
+}
+
+#blogpost article form{
+    background-color: black;
+}
+
+#blogpost article h3{
+    text-decoration: underline;
+}
+/*Författare och datum*/
+#blogpost article p:nth-child(2){
+    font-weight: bolder;
+    font-style: italic;
+}
+#blogpost article p:nth-child(3){
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: var(--beige);
+    padding: 1rem;
+}
+
+/*
+Kommentarer
+*/
+#blogpost article div{
+    background-color: var(--beige);
+    width: 60%;
+    border: 2px solid var(--oliveGreen);
+    padding: 0.2rem;
+    margin-bottom: 1rem;
+}
+#blogpost article div p:first-child{
+    font-weight: normal;
+}
+#blogpost article div p:nth-child(2){
+    color: red;
+}
+
+section article {
+    width: 100%;
+    min-width: 0;
+}

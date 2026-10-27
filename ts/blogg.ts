@@ -99,6 +99,7 @@ function getPost(): void{
     if(!(titlePost instanceof HTMLInputElement) || 
     !(contentPost instanceof HTMLTextAreaElement)) return; //kontrollerar att det är rätt typ av element(input o textarea)
     if(!author) return; //Kör bara om användarnamn finns(körs ej om användarnamn saknas)
+    if(!contentPost.value.trim() || !titlePost.value.trim()) return; //Hindrar tom input med enbart mellanslag
 
     const newPost: NewPost = {
         title: titlePost.value,
@@ -129,19 +130,27 @@ function createArticles(blogArray: NewPost[]): void{
     //skapar en kopia av ursprungsarrayen som bara används här. Den reverserar ordningen på artiklarna innan de skrivs ut.
     blogArray.slice().reverse().forEach(post => {
         const articleElement = document.createElement("article");
+        const divElement = document.createElement("div");
+
 
         //Skapar innehållet i blogginlägget
         let element = createElement("h3", post.title);
         articleElement.appendChild(element);
 
-        element = createElement("p", "Skrivet av: " + post.userName + " - " + post.date);
+        element = createElement("p", "Av: " + post.userName + " (" + post.date + ")");
         articleElement.appendChild(element);
 
         element = createElement("p", post.content);
         articleElement.appendChild(element);
 
+        element = createElement("h4", "Kommentarsfält:");
+        articleElement.appendChild(element);
+
+        
+
         //går igenom eventuella kommentarer med en foreach-loop.
         if(post.comment){
+
             post.comment.slice().reverse().forEach(comment => {
                 const commentContainer = document.createElement("div");
 

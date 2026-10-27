@@ -112,7 +112,7 @@ main {
 
 /* Svampkort på båda sidorna */
 #shroomlist article,
-#myShroomList article {
+#myShroomList article{
     background-color: var(--sageGreen);
     border: 2px solid var(--darkBrown);
     border-radius: 8px;
