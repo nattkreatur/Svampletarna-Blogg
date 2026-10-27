@@ -24,16 +24,29 @@
             <article>
                 <h2>Blogg</h2>
                 <p>De senaste blogginläggen från föreningens medlemmar.</p>
-                <p>Logga in för att skapa eller kommentera inlägg.</p>
+                <p id="loggedOutMsg">Logga in för att skapa eller kommentera inlägg.</p>
             </article>
             <div>
                 <p id="userStatus"></p>
                 <a id="logIn" href="./login.html">Logga in</a>
                 <button id="logOut">Logga ut</button>
             </div>
-            <form action=""></form>
+            <div id="createBlogPost">
+                <form>
+                    <h3>Skapa inlägg</h3>
+                    <label for="title">Rubrik:</label>
+                    <input type="text" name="title" id="title" required><br>
                     
-        </section>    
+                    <label for="blogtext">Inlägg:</label>
+                    <textarea name="blogtext" id="blogtext" rows="10" required></textarea><br>
+
+                    <input type="submit" value="Publicera">
+                </form>
+            </div>  
+        </section>
+        <section>
+
+        </section>
         <section id="blogpost"> <!--blogpost UNIKT för denna sidan pga JS-funktion -->
             
             <!-- Här ska svamparna in, article med h3 img och p-->
