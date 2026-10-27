@@ -1,3 +1,4 @@
+const loggedOutMsg = document.getElementById("loggedOutMsg");
 const loginStatus = document.getElementById("userStatus");
 const createBlogPost = document.getElementById("createBlogPost");
 const logOutBtn = document.querySelector("#logOut");
@@ -22,9 +23,10 @@ function init() {
 //Funktioner relaterat till inloggad status//
 /////////////////////////////////////////////
 function showStatus() {
-    if (!loginStatus || !logOutBtn || !logInLink || !createBlogPost)
+    if (!loginStatus || !logOutBtn || !logInLink || !createBlogPost || !loggedOutMsg)
         return;
     if (loggedIn === "true") {
+        loggedOutMsg.style.display = "none";
         loginStatus.textContent = "Du är inloggad.";
         logInLink.style.display = "none";
         createBlogPost.style.display = "block";
@@ -105,7 +107,7 @@ function createArticles(blogArray) {
         articleElement.appendChild(element);
         //går igenom eventuella kommentarer med en foreach-loop.
         if (post.comment) {
-            post.comment.forEach(comment => {
+            post.comment.slice().reverse().forEach(comment => {
                 const commentContainer = document.createElement("div");
                 let commentElement = createElement("p", comment.userName + " - " + comment.date);
                 commentContainer.appendChild(commentElement);
@@ -151,6 +153,7 @@ function submitComment(commentForm, commentText, post) {
         };
         post.comment.push(newComment);
         localStorage.setItem("blogPosts", JSON.stringify(blogPostArray));
+        location.reload();
     });
 }
 init();

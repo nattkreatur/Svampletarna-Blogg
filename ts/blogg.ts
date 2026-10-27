@@ -1,5 +1,6 @@
 export {}; //ger scriptet ett eget scope
 
+const loggedOutMsg = document.getElementById("loggedOutMsg");
 const loginStatus = document.getElementById("userStatus");
 const createBlogPost = document.getElementById("createBlogPost");
 const logOutBtn = document.querySelector<HTMLButtonElement>("#logOut");
@@ -31,11 +32,12 @@ function init(): void{
 //Funktioner relaterat till inloggad status//
 /////////////////////////////////////////////
 
-function showStatus():void{
-    if(!loginStatus || !logOutBtn || !logInLink || !createBlogPost) return;
+function showStatus(): void{
+    if(!loginStatus || !logOutBtn || !logInLink || !createBlogPost || !loggedOutMsg) return;
 
     
     if(loggedIn === "true"){
+        loggedOutMsg.style.display = "none";
         loginStatus.textContent = "Du är inloggad.";
         logInLink.style.display = "none";
         createBlogPost.style.display = "block";
@@ -48,7 +50,7 @@ function showStatus():void{
 }
 
 //Uppdaterar Localstorage ifall Logga ut knappen används.
-function logOut():void{
+function logOut(): void{
     if(!logOutBtn) return;
     logOutBtn.addEventListener("click", event =>{
         localStorage.removeItem("loggedIn");
@@ -64,8 +66,6 @@ function logOut():void{
 
 let blogPostArray: NewPost[] = []; //skapar array som bara får innehålla objekt av typen BlogPost
 
-
-
 interface NewComment {
     userName: string;
     date: string;
@@ -77,9 +77,8 @@ interface NewPost extends NewComment {
     comment: NewComment[];
 }
 
-function checkArray() {
+function checkArray(): void{
     const savedPosts = localStorage.getItem("blogPosts");
-
     //hämtar bloggen som string från localstorage och parsar dem tillbaka till object
     //i blogPostArray. as NewPost säger att arrayen ska innehålla NewPost objekt.
     if(savedPosts) {
@@ -90,7 +89,7 @@ function checkArray() {
 
 //Funktionens uppdrag är att hämta information från formulärets inputfält och sedan pusha dem till en array.
 //De pushas med hjälp av JSON-stringify.
-function getPost(){
+function getPost(): void{
     if(!formRef) return;
 
     const titlePost = formRef.elements.namedItem("title"); //Referenser för title och content från formuläret
@@ -124,7 +123,7 @@ const sectionRef = document.getElementById("blogpost");
 
 
 //Funktionen tar emot en array med objekt(NewPost[]) och skriver ut dessa som artiklar genom att skapa HTML-element.
-function createArticles(blogArray: NewPost[]) {
+function createArticles(blogArray: NewPost[]): void{
     if(!sectionRef) return;
 
     //skapar en kopia av ursprungsarrayen som bara används här. Den reverserar ordningen på artiklarna innan de skrivs ut.
@@ -143,7 +142,7 @@ function createArticles(blogArray: NewPost[]) {
 
         //går igenom eventuella kommentarer med en foreach-loop.
         if(post.comment){
-            post.comment.forEach(comment => {
+            post.comment.slice().reverse().forEach(comment => {
                 const commentContainer = document.createElement("div");
 
                 let commentElement = createElement("p", comment.userName + " - " + comment.date);
@@ -170,15 +169,13 @@ function createArticles(blogArray: NewPost[]) {
             //input-fältens värden skickas till submitComment
             submitComment(commentForm, commentText, post);
         }
-        
-
 
         sectionRef.appendChild(articleElement);
     })
 }
 
 //Funktionen skapar HTML-element
-function createElement(element: string, text: string){
+function createElement(element: string, text: string): HTMLElement{
     const newElement = document.createElement(element);
     newElement.textContent = text;
     return newElement;
@@ -189,7 +186,7 @@ function createElement(element: string, text: string){
 function submitComment(
     commentForm: HTMLFormElement,
     commentText: HTMLTextAreaElement, 
-    post: NewPost): void {
+    post: NewPost): void{
         commentForm.addEventListener("submit", event => {
             event.preventDefault();
 
@@ -207,6 +204,7 @@ function submitComment(
             post.comment.push(newComment);
 
             localStorage.setItem("blogPosts", JSON.stringify(blogPostArray));
+            location.reload();
         })
     }
 
