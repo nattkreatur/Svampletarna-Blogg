@@ -18,7 +18,6 @@ function init(): void{
 
         formRef.addEventListener("submit", event => {
             event.preventDefault(); //stoppar inbyggd formulärhantering. TS tar över
-            //kör funktion för att hämta data och spara i array
             
             getPost();
         })
