@@ -44,7 +44,7 @@ function showStatus(): void{
     } else{
         loginStatus.textContent = "Du är inte inloggad.";
         logOutBtn.style.display = "none";
-        logInLink.style.display = "block";
+        logInLink.style.display = "inline-block";
         createBlogPost.style.display = "none";
     }
 }
@@ -134,45 +134,53 @@ function createArticles(blogArray: NewPost[]): void{
 
 
         //Skapar innehållet i blogginlägget
-        let element = createElement("h3", post.title);
-        articleElement.appendChild(element);
-
-        element = createElement("p", "Av: " + post.userName + " (" + post.date + ")");
+        
+        let element = createElement("h2", post.title);
         articleElement.appendChild(element);
 
         element = createElement("p", post.content);
+        divElement.appendChild(element);
+
+        element = createElement("p", "Av: " + post.userName + " (" + post.date + ")");
+        divElement.appendChild(element);
+
+        articleElement.appendChild(divElement);
+
+        element = createElement("h4", "Kommentarer");
         articleElement.appendChild(element);
 
-        element = createElement("h4", "Kommentarsfält:");
-        articleElement.appendChild(element);
-
-        
 
         //går igenom eventuella kommentarer med en foreach-loop.
-        if(post.comment){
+        if(post.comment && post.comment.length > 0 ){
 
             post.comment.slice().reverse().forEach(comment => {
+                //Skapar en kosmetisk div och tilldeldar den en klass av CSS-skäl
                 const commentContainer = document.createElement("div");
+                commentContainer.classList.add("commentContainer");
 
-                let commentElement = createElement("p", comment.userName + " - " + comment.date);
+                let commentElement = createElement("p", comment.content);
                 commentContainer.appendChild(commentElement);
 
-                commentElement = createElement("p", comment.content);
+                commentElement = createElement("p", comment.userName + " (" + comment.date + ")");
                 commentContainer.appendChild(commentElement);
 
                 articleElement.appendChild(commentContainer);
             })
+        } else{
+            const noComment = createElement("p", "Det finns inga kommentarer än.");
+            articleElement.appendChild(noComment);
         }
-
         //Skapar formulär för kommentarer
         if(loggedIn === "true"){
             const commentForm = document.createElement("form");
             const commentText = document.createElement("textarea");
             const commentButton = createElement("button", "Publicera kommentar");
-
+            
+            commentText.placeholder = "Skriv en kommentar...";
             commentButton.setAttribute("type", "submit");
 
             commentForm.append(commentText, commentButton);
+            
             articleElement.appendChild(commentForm);
 
             //input-fältens värden skickas till submitComment

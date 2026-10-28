@@ -77,6 +77,7 @@ nav a {
     border-radius: 8px;
     font-weight: bold;
     color: black;
+    white-space: nowrap; /*fixade en radbrytningsbugg*/
 }
 
 /* Visar tydligt vilket menyval som är markerat */
@@ -179,7 +180,7 @@ footer p {
 /* Knappar för Lägg till, Ta bort och Rensa listan */
 #shroomlist button,
 #myShroomList button,
-#clearButton {
+#clearButton{
     background-color: var(--beige);
     color: var(--darkBrown);
     border: 1px solid var(--darkBrown);
@@ -192,7 +193,7 @@ footer p {
 /* Ändrar färg när muspekaren är över knappen */
 #shroomlist button:hover:not(:disabled),
 #myShroomList button:hover,
-#clearButton:hover {
+#clearButton:hover{
     background-color: var(--ochre);
 }
 

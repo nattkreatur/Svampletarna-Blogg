@@ -1,91 +1,180 @@
 /*Denna CSS innehåller kod som är specifik enbart för blogg.html och login.html*/
-:root {
-    --beige: #e6dccb;
-    --terracotta: #c47457;
-    --sageGreen: #9c9e80;
-    --ochre: #b68036;
-    --oliveGreen: #605f4b;
-    --darkBrown: #3b2c24;
-    --darkGray: #2a2a2a;
-}
 
-/* Blogginlägg 
-#blogpost {
-    width: 100%;
-    margin: 0 0 20px;
-    padding: 0;
-}
-
-#blogpost article {
-    
-    width: 100%;
-    margin: 0;
-    padding: 20px;
+.intro{
     background-color: var(--sageGreen);
-    border: 2px solid var(--darkBrown);
-    border-radius: 8px;
-    margin-bottom: 1rem;
 }
-*/
-/*
-Blogginlägg
-*/
-
 .intro div{
-    background-color: var(--beige);
-    border: 2px solid var(--oliveGreen);
+    background-color: var(--terracotta);
+    border: 2px solid var(--darkBrown);
     border-radius: 8px;
-    padding: 0.2rem;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+/*
+Blogginläggen
+*/
+/*Blogginlägg parent-ruta*/
 #blogpost article{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
     background-color: var(--sageGreen);
     border: 2px solid var(--darkBrown);
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 1rem;
+    
 }
-
-#blogpost article form{
-    background-color: black;
+/*Blogginläggets textruta*/
+#blogpost article div:first-of-type{
+    width: 100%;
 }
-
-#blogpost article h3{
-    border: 1px solid black;
-    border-radius: 8px;
+/*Textrutor blogginlägg och kommentarer*/
+#blogpost article div{
     background-color: var(--beige);
+    border: 2px solid var(--darkBrown);
+    border-radius: 8px;
+}
+/*Rubrik på blogginlägg*/
+#blogpost article h3{
+    padding-left: 1rem;
+}
+/*Blogginlägg content*/
+#blogpost article div:nth-of-type(1) p:first-of-type{
     padding: 1rem;
+    margin-top: 0;
 }
 /*Författare och datum*/
-#blogpost article p:nth-child(2){
-    font-weight: bolder;
+#blogpost article div:nth-of-type(1) p:nth-of-type(2){
+    padding-right: 1rem;
     font-style: italic;
-}
-#blogpost article p:nth-child(3){
-    border: 1px solid black;
-    border-radius: 8px;
-    background-color: var(--beige);
-    padding: 1rem;
+    text-align: right;
 }
 
 /*
 Kommentarer
 */
-#blogpost article div{
-    background-color: var(--beige);
-    width: 60%;
-    border: 2px solid var(--oliveGreen);
-    padding: 0.2rem;
+#blogpost h4{
+    margin-bottom: 0.2rem;
+}
+/*Kommentarens behållare*/
+#blogpost article .commentContainer{
+    max-width: 80%;
+    padding: 1rem;
     margin-bottom: 1rem;
 }
-#blogpost article div p:first-child{
-    font-weight: normal;
+/*Kommentar innehåll*/
+#blogpost article .commentContainer p:first-of-type{
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+    text-align: center;
 }
-#blogpost article div p:nth-child(2){
-    color: red;
+/*Kommentarens författare*/
+#blogpost article .commentContainer p:nth-of-type(2){
+    font-style: italic;
+    margin-bottom: 0rem;
+    text-align: right;
 }
 
-section article {
+/*
+Blogginlägg- och kommentarsfunktioner
+*/
+#createBlogPost form{
+    margin: 1rem;
+}
+/*Rubrikinput*/
+#createBlogPost form input[type="text"]{
+    margin-bottom: 1rem;
+}
+/*Kommentarsformulär*/
+#blogpost article form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    max-width: 500px;
+}
+
+/*Utseende och regler för inputfält i båda formulären*/
+#blogpost article form textarea, 
+#createBlogPost form textarea, 
+#createBlogPost form input[type="text"]{
     width: 100%;
-    min-width: 0;
+    background-color: var(--beige);
+    color: var(--darkBrown);
+    border: 2px solid var(--darkBrown);
+    border-radius: 8px;
+    font-size: 1rem;
+    padding: 0.5rem;
+    font-family: inherit;
+}
+
+textarea{
+    resize: vertical;
+    min-height: 100px;
+    max-height: 500px;
+}
+/*Ger rutan en outline när användaren skriver*/
+#blogpost article form textarea:focus-visible,
+#createBlogPost form textarea:focus-visible, 
+#createBlogPost form input[type="text"]:focus-visible {
+    outline: 2px solid var(--darkBrown);
+    outline-offset: 2px;
+}
+
+/*
+Knappar och länkar med knapputseende
+*/
+button, input[type="submit"],
+.buttonLink{
+    background-color: var(--beige);
+    color: var(--darkBrown);
+    border: 1px solid var(--darkBrown);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0.5rem;
+}
+/*Specifikt för länkar som ska se ut som knappar*/
+.buttonLink{
+    font-size: smaller;    
+    display: inline-block;
+    text-decoration: none;
+}
+button:hover, input[type="submit"]:hover,
+.buttonLink:hover{
+    background-color: var(--ochre);
+}
+
+/*
+Separat för loginsidan
+*/
+#loginForm label{
+    display: block;
+}
+
+input[type="text"],input[type="password"]{
+    background-color: var(--beige);
+    color: var(--darkBrown);
+    border: 2px solid var(--darkBrown);
+    border-radius: 8px;
+    font-size: 1rem;
+    padding: 0.5rem;
+    font-family: inherit;
+}
+/*
+Inputfälten på login ändrar orientering för desktop
+*/
+@media (min-width: 768px) {
+    #loginForm label{
+        display: inline-block;
+        width: 5rem;
+        text-align: left;
+    }
 }

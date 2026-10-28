@@ -57,7 +57,8 @@ function logIn(){
     else{
             error.textContent = "Felaktiga inloggningsuppgifter!";
             error.style.display = "block";
-        } 
+            error.style.fontWeight = "bold";
+        }
     
 }
 
@@ -70,7 +71,7 @@ function checkifLoggedIn(){
         formRef.style.display = "none";
         userStatus.style.display = "block";
         userStatus.textContent = "Välkommen " + user + ", du är nu inloggad.";
-        logOutBtn.style.display = "block";
+        logOutBtn.style.display = "inline-block";
     } else {
         formRef.style.display = "block";
         logOutBtn.style.display = "none";
