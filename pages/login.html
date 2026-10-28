@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logga in</title>
     <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/blog.css">
     <script type="module" src="../dist/login.js"></script>
 </head>
 <body>
@@ -14,6 +15,7 @@
     <nav>
         <ul>
             <li><a href="../index.html">Startsida</a></li> <!-- ../ används för att ta sig ur mappen-->
+            <li><a href="./blogg.html">Blogg</a></li>
             <li><a href="./svampar.html">Svampförteckning</a></li>
             <li><a href="./forvaxling.html">Förväxlingssvampar</a></li>
             <li><a href="./minasvampar.html">Mina svampar</a></li>
@@ -24,7 +26,7 @@
             <div>
                 <p id="userStatus"></p>
                 <button id="logOut">Logga ut</button>
-                <form>
+                <form id="loginForm">
                     <h3>Logga in</h3>
 
                     <label for="user">Namn</label>
@@ -37,7 +39,7 @@
 
                     <p id="error">Du är inte inloggad.</p>
                 </form>
-                <a href="./blogg.html">Tillbaka till bloggen</a>
+                <a href="./blogg.html" class="buttonLink">Tillbaka till bloggen</a>
             </div>
                     
         </section>    

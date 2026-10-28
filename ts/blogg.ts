@@ -44,7 +44,7 @@ function showStatus(): void{
     } else{
         loginStatus.textContent = "Du är inte inloggad.";
         logOutBtn.style.display = "none";
-        logInLink.style.display = "block";
+        logInLink.style.display = "inline-block";
         createBlogPost.style.display = "none";
     }
 }
@@ -99,6 +99,7 @@ function getPost(): void{
     if(!(titlePost instanceof HTMLInputElement) || 
     !(contentPost instanceof HTMLTextAreaElement)) return; //kontrollerar att det är rätt typ av element(input o textarea)
     if(!author) return; //Kör bara om användarnamn finns(körs ej om användarnamn saknas)
+    if(!contentPost.value.trim() || !titlePost.value.trim()) return; //Hindrar tom input med enbart mellanslag
 
     const newPost: NewPost = {
         title: titlePost.value,
@@ -129,41 +130,57 @@ function createArticles(blogArray: NewPost[]): void{
     //skapar en kopia av ursprungsarrayen som bara används här. Den reverserar ordningen på artiklarna innan de skrivs ut.
     blogArray.slice().reverse().forEach(post => {
         const articleElement = document.createElement("article");
+        const divElement = document.createElement("div");
+
 
         //Skapar innehållet i blogginlägget
-        let element = createElement("h3", post.title);
-        articleElement.appendChild(element);
-
-        element = createElement("p", "Skrivet av: " + post.userName + " - " + post.date);
+        
+        let element = createElement("h2", post.title);
         articleElement.appendChild(element);
 
         element = createElement("p", post.content);
+        divElement.appendChild(element);
+
+        element = createElement("p", "Av: " + post.userName + " (" + post.date + ")");
+        divElement.appendChild(element);
+
+        articleElement.appendChild(divElement);
+
+        element = createElement("h4", "Kommentarer");
         articleElement.appendChild(element);
 
-        //går igenom eventuella kommentarer med en foreach-loop.
-        if(post.comment){
-            post.comment.slice().reverse().forEach(comment => {
-                const commentContainer = document.createElement("div");
 
-                let commentElement = createElement("p", comment.userName + " - " + comment.date);
+        //går igenom eventuella kommentarer med en foreach-loop.
+        if(post.comment && post.comment.length > 0 ){
+
+            post.comment.slice().reverse().forEach(comment => {
+                //Skapar en kosmetisk div och tilldeldar den en klass av CSS-skäl
+                const commentContainer = document.createElement("div");
+                commentContainer.classList.add("commentContainer");
+
+                let commentElement = createElement("p", comment.content);
                 commentContainer.appendChild(commentElement);
 
-                commentElement = createElement("p", comment.content);
+                commentElement = createElement("p", comment.userName + " (" + comment.date + ")");
                 commentContainer.appendChild(commentElement);
 
                 articleElement.appendChild(commentContainer);
             })
+        } else{
+            const noComment = createElement("p", "Det finns inga kommentarer än.");
+            articleElement.appendChild(noComment);
         }
-
         //Skapar formulär för kommentarer
         if(loggedIn === "true"){
             const commentForm = document.createElement("form");
             const commentText = document.createElement("textarea");
             const commentButton = createElement("button", "Publicera kommentar");
-
+            
+            commentText.placeholder = "Skriv en kommentar...";
             commentButton.setAttribute("type", "submit");
 
             commentForm.append(commentText, commentButton);
+            
             articleElement.appendChild(commentForm);
 
             //input-fältens värden skickas till submitComment
