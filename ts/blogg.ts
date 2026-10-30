@@ -145,7 +145,7 @@ function createArticles(blogArray: NewPost[]): void{
 
         articleElement.appendChild(divElement);
 
-        element = createElement("h4", "Kommentarer");
+        element = createElement("h3", "Kommentarer");
         articleElement.appendChild(element);
 
 
