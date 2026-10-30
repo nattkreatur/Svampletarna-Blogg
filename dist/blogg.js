@@ -7,12 +7,11 @@ const formRef = document.querySelector("form");
 let loggedIn = localStorage.getItem("loggedIn");
 function init() {
     checkArray(); //Kollar om det redan finns blogginlägg i localstorage.
-    createArticles(blogPostArray);
+    createArticles(blogPostArray); //Skapar innehåll på sidan utifrån blogginlägg sparade i array.
     console.log(blogPostArray); //för felsökning
     if (formRef) {
         formRef.addEventListener("submit", event => {
             event.preventDefault(); //stoppar inbyggd formulärhantering. TS tar över
-            //kör funktion för att hämta data och spara i array
             getPost();
         });
     }
@@ -38,7 +37,7 @@ function showStatus() {
         createBlogPost.style.display = "none";
     }
 }
-//Uppdaterar Localstorage ifall Logga ut knappen används.
+//Uppdaterar Localstorage ifall Logga ut knappen används. Tar också bort användarnamn.
 function logOut() {
     if (!logOutBtn)
         return;
@@ -97,7 +96,7 @@ const sectionRef = document.getElementById("blogpost");
 function createArticles(blogArray) {
     if (!sectionRef)
         return;
-    //skapar en kopia av ursprungsarrayen som bara används här. Den reverserar ordningen på artiklarna innan de skrivs ut.
+    //slice skapar en kopia av ursprungsarrayen som bara används här. Ordningen på artiklarna reverseras innan de skrivs ut. Detta för att inte ändra på originalarrayen i onödan.
     blogArray.slice().reverse().forEach(post => {
         const articleElement = document.createElement("article");
         const divElement = document.createElement("div");
@@ -109,9 +108,10 @@ function createArticles(blogArray) {
         element = createElement("p", "Av: " + post.userName + " (" + post.date + ")");
         divElement.appendChild(element);
         articleElement.appendChild(divElement);
-        element = createElement("h4", "Kommentarer");
+        element = createElement("h3", "Kommentarer");
         articleElement.appendChild(element);
         //går igenom eventuella kommentarer med en foreach-loop.
+        //comment length kollar om det finns något innehåll i arrayen, ifall det inte gör det kan else-satsen köras.
         if (post.comment && post.comment.length > 0) {
             post.comment.slice().reverse().forEach(comment => {
                 //Skapar en kosmetisk div och tilldeldar den en klass av CSS-skäl
